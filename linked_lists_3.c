@@ -36,7 +36,7 @@ void PrintList(struct sPerson *list)
 struct sPerson *getNewPerson(const int age, const char *name) 
 {
     struct sPerson *newPerson = NULL;
-    newPerson = (struct sPerson*)malloc(sizeof(struct sPerson));
+    newPerson = malloc(sizeof(struct sPerson));
 	newPerson->nextInLine = NULL;
 	newPerson->age = age;
     sprintf(newPerson->name, "%s", name);

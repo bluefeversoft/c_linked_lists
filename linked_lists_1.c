@@ -9,7 +9,7 @@ struct sPerson {
 struct sPerson *getNewPerson(const int age) 
 {
     struct sPerson *newPerson = NULL;
-    newPerson = (struct sPerson*)malloc(sizeof(struct sPerson));
+    newPerson = malloc(sizeof(struct sPerson));
 	newPerson->nextInLine = NULL;
 	newPerson->age = age;
     printf("new person at %X\n", newPerson);
