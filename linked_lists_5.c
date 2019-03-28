@@ -10,7 +10,7 @@ struct sPerson {
 
 void printPerson(struct sPerson *person)
 {
-    printf("name:%s age:%d address:%X nextInLine:%X\n", person->name,
+    printf("name:%s age:%d address:%p nextInLine:%p\n", person->name,
     person->age, person, person->nextInLine);
 }
 
@@ -40,7 +40,7 @@ struct sPerson *getNewPerson(const int age, const char *name)
 	newPerson->nextInLine = NULL;
 	newPerson->age = age;
     sprintf(newPerson->name, "%s", name);
-    printf("new person at %X\n", newPerson);
+    printf("new person at %p\n", newPerson);
     return newPerson;
 }
 

@@ -8,7 +8,7 @@ struct sPerson {
 
 void printPerson(struct sPerson *person, const char *comment)
 {
-    printf("%s age:%d address:%X nextInLine:%X\n", comment,
+    printf("%s age:%d address:%p nextInLine:%p\n", comment,
     person->age, person, person->nextInLine);
 }
 
@@ -18,7 +18,7 @@ struct sPerson *getNewPerson(const int age)
     newPerson = malloc(sizeof(struct sPerson));
 	newPerson->nextInLine = NULL;
 	newPerson->age = age;
-    printf("new person at %X\n", newPerson);
+    printf("new person at %p\n", newPerson);
     return newPerson;
 }
 
@@ -29,8 +29,8 @@ int main()
     struct sPerson *first = NULL;
     struct sPerson *second = NULL;
 
-    printf("first %X\n", first);
-    printf("second %X\n", first);
+    printf("first %p\n", first);
+    printf("second %p\n", first);
 
     first = getNewPerson(125);
     second = getNewPerson(50);

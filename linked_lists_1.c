@@ -12,7 +12,7 @@ struct sPerson *getNewPerson(const int age)
     newPerson = malloc(sizeof(struct sPerson));
 	newPerson->nextInLine = NULL;
 	newPerson->age = age;
-    printf("new person at %X\n", newPerson);
+    printf("new person at %p\n", newPerson);
     return newPerson;
 }
 
@@ -21,11 +21,11 @@ int main()
 	printf("\n\n** START **\n\n");
 
     struct sPerson *first = NULL;
-    printf("first %X\n", first);
+    printf("first %p\n", first);
 
     first = getNewPerson(125);
 
-    printf("age:%d address:%X nextInLine:%X ", first->age, 
+    printf("age:%d address:%p nextInLine:%p ", first->age, 
         first, first->nextInLine);
 
 	return 0;
