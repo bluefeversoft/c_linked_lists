@@ -8,16 +8,19 @@ struct sPerson {
 	struct sPerson *nextInLine;
 };
 
-void printPerson(struct sPerson *person)
+void printPerson(const struct sPerson *person)
 {
-    printf("name:%s age:%d address:%p nextInLine:%p\n", person->name,
-    person->age, person, person->nextInLine);
+    printf("name:%s age:%d address:%p nextInLine:%p\n", 
+    	person->name,
+    	person->age, 
+    	person, 
+    	person->nextInLine);
 }
 
-void PrintList(struct sPerson *list)
+void PrintList(const struct sPerson *list)
 {
 	printf("Printing List:\n");
-	struct sPerson *t;
+	const struct sPerson *t;
 	t = list;
     if(t == NULL)
     {
@@ -105,12 +108,12 @@ int main()
     {
         printf( "Enter a command or value : ");
 		fgets(command, 64, stdin);
-		if (strncmp("q", command, 1) == 0) 
+		if (strcmp("q\n", command) == 0) 
 		{
 			printf("Quitting..\n");
 			break;
 		}
-		else if (strncmp("print", command, 5) == 0) 
+		else if (strcmp("print\n", command) == 0) 
 		{
 			printf("Printing..\n");
 			PrintList(first);
@@ -146,6 +149,7 @@ int main()
     }
 
     CleanUp(first);
+    first = NULL;
     pTemp1 = NULL;
     pTemp2 = NULL;
 

@@ -6,10 +6,13 @@ struct sPerson {
 	struct sPerson *nextInLine;
 };
 
-void printPerson(struct sPerson *person, const char *comment)
+void printPerson(const struct sPerson *person, const char *comment)
 {
-    printf("%s age:%d address:%p nextInLine:%p\n", comment,
-    person->age, person, person->nextInLine);
+    printf("%s age:%d address:%p nextInLine:%p\n", 
+        comment,
+        person->age, 
+        person, 
+        person->nextInLine);
 }
 
 struct sPerson *getNewPerson(const int age) 

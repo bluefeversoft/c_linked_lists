@@ -25,8 +25,10 @@ int main()
 
     first = getNewPerson(125);
 
-    printf("age:%d address:%p nextInLine:%p ", first->age, 
-        first, first->nextInLine);
+    printf("age:%d address:%p nextInLine:%p\n", 
+        first->age, 
+        first, 
+        first->nextInLine);
 
 	return 0;
 }
