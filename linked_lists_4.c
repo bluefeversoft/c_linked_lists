@@ -4,17 +4,23 @@
 
 struct sPerson {
 	int age;
-	char name[16];
 	struct sPerson *nextInLine;
 };
 
-void printPerson(const struct sPerson *person)
+void printPerson(const struct sPerson *person, const char *comment)
 {
-    printf("name:%s age:%d address:%p nextInLine:%p\n", 
-        person->name,
-        person->age, 
-        person, 
-        person->nextInLine);
+    if (person == NULL)
+    {
+        printf("%s is NULL\n", comment);
+    }
+    else
+    {
+       printf("%s: age:%d address:%p nextInLine:%p\n", 
+            comment,
+            person->age, 
+            person,
+            person->nextInLine);
+    }
 }
 
 void PrintList(const struct sPerson *list)
@@ -30,33 +36,39 @@ void PrintList(const struct sPerson *list)
     {
         while(t)
         {
-            printPerson(t);
+            printPerson(t, "t");
             t = t->nextInLine;
         }
     }
 }
 
-struct sPerson *getNewPerson(const int age, const char *name) 
+struct sPerson *getNewPerson(const int age) 
 {
     struct sPerson *newPerson = NULL;
     newPerson = malloc(sizeof(struct sPerson));
-	newPerson->nextInLine = NULL;
-	newPerson->age = age;
-    sprintf(newPerson->name, "%s", name);
-    printf("new person at %p\n", newPerson);
+	if(newPerson != NULL)
+	{
+		newPerson->nextInLine = NULL;
+		newPerson->age = age;
+		printf("new person at %p\n", newPerson);
+	}
+	else
+	{
+		printf("Allocation Failure!! \n");
+	}
     return newPerson;
 }
 
 void CleanUp(struct sPerson *list)
 {
-	struct sPerson *next;
-	while(list)
-	{
-		next = list->nextInLine;
-		printf("Cleaning %s\n", list->name);
-		free(list);
-		list = next;
-	}
+    struct sPerson *next;
+    while(list)
+    {
+        next = list->nextInLine;
+        printf("Cleaning %d\n", list->age);
+        free(list);
+        list = next;
+    }
 }
 
 int main() 
@@ -68,8 +80,6 @@ int main()
 	struct sPerson *pStart = NULL;
 
     char command[64];
-	char name[16];
-
     char start;
 	int age;
 
@@ -89,25 +99,34 @@ int main()
 		}
         else
         {
-            if (sscanf(command, "%c %s %d", &start, name, &age) != 0)
+            if (sscanf(command, "%c %d", &start, &age) != 0)
             {
-				printf("Adding %s %d at %c\n", name, age, start);
+				printf("Adding %d at %c\n", age, start);
                 if (first == NULL)
                 {
-                    first = getNewPerson(age, name);
-                    added = first;
+                    first = getNewPerson(age);
+					if(first != NULL)
+					{
+						added = first;
+					}
                 }
                 else if(start == 's')
                 {
-                    pStart = getNewPerson(age, name);
-                    pStart->nextInLine = first;
-					first = pStart;
-					pStart = NULL;
+                    pStart = getNewPerson(age);
+                    if (pStart != NULL)
+                    {
+                        pStart->nextInLine = first;
+                        first = pStart;
+                        pStart = NULL;
+                    }
                 }
                 else
                 {
-                    added->nextInLine = getNewPerson(age, name);
-					added = added->nextInLine;
+                    added->nextInLine = getNewPerson(age);
+					if(added->nextInLine != NULL)
+					{
+						added = added->nextInLine;
+					}
                 }
                 
             }

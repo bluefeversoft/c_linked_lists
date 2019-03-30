@@ -4,17 +4,23 @@
 
 struct sPerson {
 	int age;
-	char name[16];
 	struct sPerson *nextInLine;
 };
 
-void printPerson(const struct sPerson *person)
+void printPerson(const struct sPerson *person, const char *comment)
 {
-    printf("name:%s age:%d address:%p nextInLine:%p\n", 
-    	person->name,
-    	person->age, 
-    	person, 
-    	person->nextInLine);
+    if (person == NULL)
+    {
+        printf("%s is NULL\n", comment);
+    }
+    else
+    {
+       printf("%s: age:%d address:%p nextInLine:%p\n", 
+            comment,
+            person->age, 
+            person,
+            person->nextInLine);
+    }
 }
 
 void PrintList(const struct sPerson *list)
@@ -30,22 +36,28 @@ void PrintList(const struct sPerson *list)
     {
         while(t)
         {
-            printPerson(t);
+            printPerson(t, "t");
             t = t->nextInLine;
         }
     }
 }
-
-struct sPerson *getNewPerson(const int age, const char *name) 
+struct sPerson *getNewPerson(const int age) 
 {
     struct sPerson *newPerson = NULL;
     newPerson = malloc(sizeof(struct sPerson));
-	newPerson->nextInLine = NULL;
-	newPerson->age = age;
-    sprintf(newPerson->name, "%s", name);
-    printf("new person at %p\n", newPerson);
+	if(newPerson != NULL)
+	{
+		newPerson->nextInLine = NULL;
+		newPerson->age = age;
+		printf("new person at %p\n", newPerson);
+	}
+	else
+	{
+		printf("Allocation Failure!! \n");
+	}
     return newPerson;
 }
+
 
 struct sPerson *getPlacePointer(struct sPerson *list, const int place)
 {
@@ -68,14 +80,14 @@ struct sPerson *getPlacePointer(struct sPerson *list, const int place)
 
 void CleanUp(struct sPerson *list)
 {
-	struct sPerson *next;
-	while(list)
-	{
-		next = list->nextInLine;
-		printf("Cleaning %s\n", list->name);
-		free(list);
-		list = next;
-	}
+    struct sPerson *next;
+    while(list)
+    {
+        next = list->nextInLine;
+        printf("Cleaning %d\n", list->age);
+        free(list);
+        list = next;
+    }
 }
 
 int main() 
@@ -87,20 +99,18 @@ int main()
 	struct sPerson *pTemp2 = NULL; 
 	
 	char command[64];
-	char name[16];
-	
 	int place;
 	int age;
 	
-	first = getNewPerson(21, "John");
+	first = getNewPerson(21);
 	pTemp1 = first;
-	pTemp1->nextInLine = getNewPerson(22, "Roger");
+	pTemp1->nextInLine = getNewPerson(22);
 	pTemp1 = pTemp1->nextInLine;	
-	pTemp1->nextInLine = getNewPerson(23, "Jane");
+	pTemp1->nextInLine = getNewPerson(23);
 	pTemp1 = pTemp1->nextInLine;	
-	pTemp1->nextInLine = getNewPerson(12, "Tom");
+	pTemp1->nextInLine = getNewPerson(12);
 	pTemp1 = pTemp1->nextInLine;	
-	pTemp1->nextInLine = getNewPerson(65, "Susan");
+	pTemp1->nextInLine = getNewPerson(65);
 	pTemp1 = pTemp1->nextInLine;	
 	
 
@@ -120,28 +130,34 @@ int main()
 		}
         else
         {
-            if (sscanf(command, "%d %s %d",  &place, name, &age) != 0)
+            if (sscanf(command, "%d %d",  &place, &age) != 0)
 			{
-				printf("Adding %s %d at place %d\n", name, age, place);
+				printf("Adding %d at place %d\n", age, place);
 				if(first == NULL)
 				{
-					first = getNewPerson(age, name);
+					first = getNewPerson(age);
 				}
 				else if(place == 1)
 				{
-					pTemp1 = getNewPerson(age, name);
-					pTemp1->nextInLine = first;
-					first = pTemp1;
-					pTemp1 = NULL;
+					pTemp1 = getNewPerson(age);
+					if(pTemp1 != NULL)
+					{
+						pTemp1->nextInLine = first;
+						first = pTemp1;
+						pTemp1 = NULL;
+					}
 				}
 				else
 				{
 					pTemp1 = getPlacePointer(first,place);
-					pTemp2 = getNewPerson(age, name);
-                    pTemp2->nextInLine = pTemp1->nextInLine;
-					pTemp1->nextInLine = pTemp2;
+					pTemp2 = getNewPerson(age);
+					if(pTemp2 != NULL)
+					{	
+                    	pTemp2->nextInLine = pTemp1->nextInLine;
+						pTemp1->nextInLine = pTemp2;
+						pTemp2 = NULL;
+					}
 					pTemp1 = NULL;
-					pTemp2 = NULL;
 				}
 			}
         }

@@ -6,6 +6,16 @@ struct sPerson {
 	struct sPerson *nextInLine;
 };
 
+struct sPerson *getNewPerson(const int age) 
+{
+    struct sPerson *newPerson = NULL;
+    newPerson = malloc(sizeof(struct sPerson));
+    newPerson->nextInLine = NULL;
+	newPerson->age = age;
+    printf("created new person at %p\n", newPerson);
+    return newPerson;
+}
+
 void printPerson(const struct sPerson *person, const char *comment)
 {
     if (person == NULL)
@@ -14,49 +24,42 @@ void printPerson(const struct sPerson *person, const char *comment)
     }
     else
     {
-        printf("%s: age:%d address:%p nextInLine:%p\n", 
+       printf("%s: age:%d address:%p nextInLine:%p\n", 
             comment,
             person->age, 
             person,
             person->nextInLine);
     }
-}
-
-struct sPerson *getNewPerson(const int age) 
-{
-    struct sPerson *newPerson = NULL;
-    newPerson = malloc(sizeof(struct sPerson));
-	newPerson->nextInLine = NULL;
-	newPerson->age = age;
-    printf("new person at %p\n", newPerson);
-    return newPerson;
+    
 }
 
 int main() 
 {
-	printf("** START **\n");
+	printf("\n\n** START **\n\n");
 
+    
     struct sPerson *first = NULL;
     struct sPerson *second = NULL;
 
-    printf("first %p\n", first);
-    printf("second %p\n", first);
-
+    printPerson(first, "first");
+    printPerson(second, "second");
+    
     first = getNewPerson(125);
-    second = getNewPerson(50);
-
-    printPerson(first, "First");
-    printPerson(second, "Second");
+    second = getNewPerson(100);
+    
+    printPerson(first, "first");
+    printPerson(second, "second");
 
     first->nextInLine = second;
     printPerson(first, "First");
     printPerson(first->nextInLine, "first->nextInLine");
     printPerson(second, "Second");
 
-    free(second);
     free(first);
-    second = NULL;
+    free(second);    
+    
     first = NULL;
+    second = NULL;
 
 	return 0;
 }

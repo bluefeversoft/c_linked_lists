@@ -4,17 +4,41 @@
 
 struct sPerson {
 	int age;
-	char name[16];
 	struct sPerson *nextInLine;
 };
 
-void printPerson(const struct sPerson *person)
+struct sPerson *getNewPerson(const int age) 
 {
-    printf("name:%s age:%d address:%p nextInLine:%p\n", 
-        person->name,
-        person->age, 
-        person, 
-        person->nextInLine);
+    struct sPerson *newPerson = NULL;
+    newPerson = malloc(sizeof(struct sPerson));
+    if (newPerson != NULL)
+    {
+        newPerson->nextInLine = NULL;
+        newPerson->age = age;
+        printf("created new person at %p\n", newPerson);
+    }
+	else
+	{
+		printf("Allocation Failure!! \n");
+	}
+    return newPerson;
+}
+
+void printPerson(const struct sPerson *person, const char *comment)
+{
+    if (person == NULL)
+    {
+        printf("%s is NULL\n", comment);
+    }
+    else
+    {
+       printf("%s: age:%d address:%p nextInLine:%p\n", 
+            comment,
+            person->age, 
+            person,
+            person->nextInLine);
+    }
+    
 }
 
 void PrintList(const struct sPerson *list)
@@ -30,21 +54,10 @@ void PrintList(const struct sPerson *list)
     {
         while(t)
         {
-            printPerson(t);
+            printPerson(t, "t");
             t = t->nextInLine;
         }
     }
-}
-
-struct sPerson *getNewPerson(const int age, const char *name) 
-{
-    struct sPerson *newPerson = NULL;
-    newPerson = malloc(sizeof(struct sPerson));
-	newPerson->nextInLine = NULL;
-	newPerson->age = age;
-    sprintf(newPerson->name, "%s", name);
-    printf("new person at %p\n", newPerson);
-    return newPerson;
 }
 
 void CleanUp(struct sPerson *list)
@@ -53,7 +66,7 @@ void CleanUp(struct sPerson *list)
     while(list)
     {
         next = list->nextInLine;
-        printf("Cleaning %s\n", list->name);
+        printf("Cleaning %d\n", list->age);
         free(list);
         list = next;
     }
@@ -61,13 +74,12 @@ void CleanUp(struct sPerson *list)
 
 int main() 
 {
-	printf("** START **\n");
+	printf("\n\n** START **\n\n");
 
     struct sPerson *first = NULL;
     struct sPerson *added = NULL;
 
     char command[64];
-	char name[16];
 	int age;
 
     while(1)
@@ -80,30 +92,33 @@ int main()
 			break;
 		}
 		else if (strcmp("print\n", command) == 0) 
-		{
-			printf("Printing..\n");
-			PrintList(first);
-		}
-        else
         {
-            if (sscanf(command, "%s %d",  name, &age) != 0)
+            printf("Printing..\n");
+            PrintList(first);
+        }
+        else if(sscanf(command, "%d", &age) != 0)
+        {
+            printf("Adding %d\n", age);
+            if (first == NULL)
             {
-				printf("Adding %s %d\n", name, age);
-                if (first == NULL)
+                first = getNewPerson(age);
+                if(first != NULL)
                 {
-                    first = getNewPerson(age, name);
                     added = first;
                 }
-                else
-                {
-                    added->nextInLine = getNewPerson(age, name);
-					added = added->nextInLine;
-                }
-                
             }
+            else
+            {
+                added->nextInLine = getNewPerson(age);
+                if(added->nextInLine != NULL)
+                {
+                    added = added->nextInLine;
+                }
+            }
+            
         }
-        
     }
+
     CleanUp(first);
     first = NULL;
     added = NULL;
