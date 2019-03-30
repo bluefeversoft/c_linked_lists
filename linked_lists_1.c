@@ -14,15 +14,16 @@ struct sPerson *getNewPerson(const int age)
     return newPerson;
 }
 
-void printPerson(const struct sPerson *person)
+void printPerson(const struct sPerson *person, const char *comment)
 {
     if (person == NULL)
     {
-        printf("Printing NULL sPerson\n");
+        printf("%s is NULL\n", comment);
     }
     else
     {
-        printf("age:%d address:%p\n", 
+        printf("%s: age:%d address:%p\n", 
+            comment,
             person->age, 
             person);
     }
@@ -35,14 +36,20 @@ int main()
     struct sPerson *first = NULL;
     struct sPerson *second = NULL;
 
-    printPerson(first);
-    printPerson(second);
+    printPerson(first, "first");
+    printPerson(second, "second");
 
     first = getNewPerson(125);
     second = getNewPerson(100);
 
-    printPerson(first);
-    printPerson(second);
+    printPerson(first, "first");
+    printPerson(second, "second");
+
+    free(first);
+    free(second);
+    
+    first = NULL;
+    second = NULL;
 
 	return 0;
 }

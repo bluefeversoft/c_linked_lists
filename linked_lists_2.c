@@ -8,11 +8,18 @@ struct sPerson {
 
 void printPerson(const struct sPerson *person, const char *comment)
 {
-    printf("%s age:%d address:%p nextInLine:%p\n", 
-        comment,
-        person->age, 
-        person, 
-        person->nextInLine);
+    if (person == NULL)
+    {
+        printf("%s is NULL\n", comment);
+    }
+    else
+    {
+        printf("%s: age:%d address:%p nextInLine:%p\n", 
+            comment,
+            person->age, 
+            person,
+            person->nextInLine);
+    }
 }
 
 struct sPerson *getNewPerson(const int age) 
@@ -42,13 +49,13 @@ int main()
     printPerson(second, "Second");
 
     first->nextInLine = second;
-    printPerson(first, "First After Assign");
+    printPerson(first, "First");
     printPerson(first->nextInLine, "first->nextInLine");
     printPerson(second, "Second");
 
     free(second);
-    second = NULL;
     free(first);
+    second = NULL;
     first = NULL;
 
 	return 0;
